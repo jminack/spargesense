@@ -8,22 +8,15 @@ from array import array
 from struct import pack
 import sys
 import time
-# print(sys.version)
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.style as ms
 
 THRESHOLD = 600
-CHUNK_SIZE = 1024
-FORMAT = pyaudio.paInt16
-RATE = 44100
-
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
-RECORD_SECONDS = 5
 outputfileName = ""
 #
 # functions defined below
@@ -58,12 +51,13 @@ def listen():
 					break
 		else:
 			if not snd_started:
+				print "Found Start"
 				snd_started = True
 
 		if snd_started:
 			frames.append(data)
 
-	print("* done recording")
+	print("Found End")
 
 	stream.stop_stream()
 	stream.close()
@@ -151,11 +145,12 @@ print "Starting"
 while 1:
 	outputfileName = time.strftime("output_%Y%m%d-%H%M%S.wav")
 	abs_max = 0
+	
+	print "Starting Recording"
 	listen()
 	# show graph
 	samples = [ss.load_wav(outputfileName)]
 
-	#fig, ax = plt.subplots()
 	plt.figure(figsize=(12,4))
 
 	for sample in samples:
@@ -170,7 +165,6 @@ while 1:
 		print(sample.name(), sample.peak_hz())
 
 	plt.show()
-	print 
-	print abs_max
+	print ("Starting Playback : Max value = %d" % (abs_max));
 	play()
 	

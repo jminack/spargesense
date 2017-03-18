@@ -1,0 +1,5 @@
+*.wav
+*.pyc
+SpargeSense/audio_data/*
+*.ini
+histogram.txt
