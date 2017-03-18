@@ -18,8 +18,9 @@ def plot_waveform(y, sr, n):
 	plt.title(samples[sn])
 	plt.tight_layout()
 
-sample_root = '/Users/richard/Documents/code/hackathon/unearthed/'
-files = ['FossilFoolsLong1.wav', 'FossilFoolsShort1.wav']
+sample_root = 'c:\\vast\\projects\\unearthed\\pipe_files\\'
+# long wav file, short wav file
+files = ['output_20170318-231220.wav', 'output_20170318-230501.wav']
 
 samples = []
 
@@ -31,8 +32,12 @@ plt.figure(figsize=(12,4))
 
 for sample in samples:
 	y = sample.histogram()
-	ax.bar(range(len(y)),y,1/1.5)
-	print(sample.name(), sample.peak_hz())
+	print len(y)
+	print y
+	ax.bar(range(len(y)),y,2) #Matt 1/1.5)
+	peakhz = sample.peak_hz()
+	peaksize = sample._peak_size
+	print(sample.name(), peakhz )
 
 ax.set_xticklabels([str(ss.hz(x)) for x in range(0, 128,10)])
 
