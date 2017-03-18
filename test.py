@@ -7,6 +7,7 @@ from sys import byteorder
 from array import array
 from struct import pack
 import sys
+import time
 # print(sys.version)
 
 import numpy as np
@@ -23,8 +24,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
-
+outputfileName = ""
 #
 # functions defined below
 #
@@ -68,16 +68,17 @@ def listen():
 	stream.stop_stream()
 	stream.close()
 	p.terminate()
-
-	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+	global outputfileName
+	wf = wave.open(outputfileName, 'wb')
 	wf.setnchannels(CHANNELS)
 	wf.setsampwidth(p.get_sample_size(FORMAT))
 	wf.setframerate(RATE)
 	wf.writeframes(b''.join(frames))
 	wf.close()
 
-def play():	
-	wf = wave.open(WAVE_OUTPUT_FILENAME, 'rb')
+def play():
+	global outputfileName;
+	wf = wave.open(outputfileName, 'rb')
 
 	p = pyaudio.PyAudio()
 
@@ -148,10 +149,11 @@ main function
 print "Starting"
 
 while 1:
+	outputfileName = time.strftime("output_%Y%m%d-%H%M%S.wav")
 	abs_max = 0
 	listen()
 	# show graph
-	samples = [ss.load_wav(WAVE_OUTPUT_FILENAME)]
+	samples = [ss.load_wav(outputfileName)]
 
 	#fig, ax = plt.subplots()
 	plt.figure(figsize=(12,4))
@@ -160,9 +162,12 @@ while 1:
 		y = sample.histogram()
 		plt.bar(range(len(y)),y,1/1.5)
 		plt.title(str(sample.peak_hz()))
+		with open("histogram.txt", "a") as histFile:
+			histFile.write(outputfileName)
+			histFile.write(",")
+			histFile.write(str(sample.histogram()))
+			histFile.write("\n")
 		print(sample.name(), sample.peak_hz())
-
-	#ax.set_xticklabels([str(ss.hz(x)) for x in range(0, 128,10)])
 
 	plt.show()
 	print 
