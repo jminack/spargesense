@@ -144,6 +144,7 @@ print "Starting"
 
 while 1:
 	outputfileName = time.strftime("output_%Y%m%d-%H%M%S.wav")
+	outputPlotName = time.strftime("output_%Y%m%d-%H%M%S_plot.png")
 	abs_max = 0
 	
 	print "Starting Recording"
@@ -164,7 +165,9 @@ while 1:
 			histFile.write("\n")
 		print(sample.name(), sample.peak_hz())
 
+	fig = plt.gcf()
 	plt.show()
+	fig.savefig(outputPlotName)
 	print ("Starting Playback : Max value = %d" % (abs_max));
-	play()
+	#play()
 	
