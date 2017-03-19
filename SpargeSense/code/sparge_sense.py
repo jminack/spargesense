@@ -85,12 +85,14 @@ def hz(bin):
 	"""convert from bin (0-127) to Hz"""
 	return int(pow(2,(bin+221.81)/26.0245))
 
-def distance(a, b):
+
+def py2_distance(a, b):
+	"""computes the square of the pythagorean distance between 2 feature vectors a & b"""
 	sum_of_squares = 0
 	for i in range(len(a)):
 		sum_of_squares += (a[i] - b[i]) * (a[i] - b[i])
 	return sum_of_squares
 
 def isBroken(sample, broken_target, unbroken_target):
-	return distance(sample, broken_target) <
+	return py2_distance(sample, broken_target) < py2_distance(sample, unbroken_target)
 
