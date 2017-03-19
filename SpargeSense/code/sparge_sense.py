@@ -38,7 +38,7 @@ class Sample:
 	def histogram(self):
 		"""returns a normalised histogram over 128 frequency bins"""
 		# print "return a histogram"
-		maxx = max( [ np.max(x) for x in self.melspec() ] )
+		#maxx = max( [ np.max(x) for x in self.melspec() ] )
 		# print maxx
 		self._colmax = maxx
 
@@ -47,8 +47,8 @@ class Sample:
 			# normalise the samples (peak = 1.0)
 			max_amplitude = max(agg_hist)
 			#print max_amplitude
-			self._histo = [x/maxx for x in agg_hist]
-			#Matt self._histo = [x/max_amplitude for x in agg_hist]
+			# self._histo = [x/maxx for x in agg_hist]
+			self._histo = [x/max_amplitude for x in agg_hist]
 			#print self._histo
 		return self._histo
 		
@@ -85,5 +85,12 @@ def hz(bin):
 	"""convert from bin (0-127) to Hz"""
 	return int(pow(2,(bin+221.81)/26.0245))
 
+def distance(a, b):
+	sum_of_squares = 0
+	for i in range(len(a)):
+		sum_of_squares += (a[i] - b[i]) * (a[i] - b[i])
+	return sum_of_squares
 
+def isBroken(sample, broken_target, unbroken_target):
+	return distance(sample, broken_target) <
 
