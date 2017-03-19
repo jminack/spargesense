@@ -153,11 +153,18 @@ while 1:
 	samples = [ss.load_wav(outputfileName)]
 
 	plt.figure(figsize=(12,4))
-
+	
 	for sample in samples:
 		y = sample.histogram()
+		plt.subplot(3,1,1)		
 		plt.bar(range(len(y)),y,1/1.5)
 		plt.title(str(sample.peak_hz()))
+		plt.subplot(3,1,2)
+		#librosa.display.specshow(sample._absmels,sample.sample_rate(), x_axis="time", y_axis="hz")
+		plt.imshow(sample._absmels)
+		plt.subplot(3,1,3)
+		librosa.display.waveplot(sample.data(),sample.sample_rate())
+		
 		with open("histogram.txt", "a") as histFile:
 			histFile.write(outputfileName)
 			histFile.write(",")

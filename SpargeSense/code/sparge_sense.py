@@ -38,16 +38,16 @@ class Sample:
 	def stftspec(self):
 		"""returns mel-scaled power (energy-squared) spectrogram"""
 		if self._mels is None:
-			self._mels = librosa.core.stft(self._data) #Matt 128)
-			self._mels = np.abs(self._mels)
-		return self._mels
+			self._mels = librosa.core.stft(self._data, win_length=128) #Matt 128)
+			self._absmels = np.abs(self._mels)
+		return self._absmels
 		
 	def histogram(self):
 		"""returns a normalised histogram over 128 frequency bins"""
 		# print "return a histogram"
 		#maxx = max( [ np.max(x) for x in self.melspec() ] )
 		# print maxx
-		self._colmax = maxx
+		#self._colmax = maxx
 
 		if self._histo is None:
 			agg_hist = [np.sum(x) for x in self.stftspec()]
