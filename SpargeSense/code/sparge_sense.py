@@ -42,6 +42,20 @@ class Sample:
 			self._absmels = np.abs(self._mels)
 		return self._absmels
 		
+	def histo_simple(self,integ_size=64):
+		"""returns mel-scaled power (energy-squared) spectrogram"""
+		result = []
+		i = 0
+		acc = 0
+		for x in self.histogram():
+			acc += x
+			i+=1
+			if i > integ_size:
+				result.append(acc)
+				acc = 0
+				i = 0
+		return result
+					
 	def histogram(self):
 		"""returns a normalised histogram over 128 frequency bins"""
 		# print "return a histogram"
@@ -57,6 +71,8 @@ class Sample:
 			# self._histo = [x/maxx for x in agg_hist]
 			self._histo = [x/max_amplitude for x in agg_hist]
 			#print self._histo
+			
+		
 		return self._histo
 		
 	def name(self):

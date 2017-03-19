@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib.style as ms
 
 THRESHOLD = 600
-CHUNK = 1024
+CHUNK = 256
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
@@ -30,14 +30,15 @@ def listen():
                 rate=RATE,
                 input=True,
                 frames_per_buffer=CHUNK)
-
 	frames = []
+	buf_frames = []
 	num_silent = 0
 	snd_started = False
 	
 	while 1:
 		# little endian, signed short
 		data = stream.read(CHUNK)
+		buf_frames.append(data)
 		snd_data = array('h', data)
 		if byteorder == 'big':
 			snd_data.byteswap()
@@ -52,10 +53,12 @@ def listen():
 		else:
 			if not snd_started:
 				print "Found Start"
+				frames.extend(buf_frames[-3:-1])
 				snd_started = True
 
-		if snd_started:
+		if snd_started and not silent:
 			frames.append(data)
+			
 
 	print("Found End")
 
@@ -155,14 +158,14 @@ while 1:
 	plt.figure(figsize=(12,4))
 	
 	for sample in samples:
-		y = sample.histogram()
-		plt.subplot(3,1,1)		
+		y = sample.histo_simple()
+		plt.subplot(1,2,1)		
+		plt.imshow(sample._absmels)
+		plt.subplot(2,2,2)
 		plt.bar(range(len(y)),y,1/1.5)
 		plt.title(str(sample.peak_hz()))
-		plt.subplot(3,1,2)
 		#librosa.display.specshow(sample._absmels,sample.sample_rate(), x_axis="time", y_axis="hz")
-		plt.imshow(sample._absmels)
-		plt.subplot(3,1,3)
+		plt.subplot(2,2,4)
 		librosa.display.waveplot(sample.data(),sample.sample_rate())
 		
 		with open("histogram.txt", "a") as histFile:
