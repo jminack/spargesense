@@ -47,7 +47,7 @@ def listen():
 		if silent:
 			if snd_started:
 				num_silent += 1
-				if num_silent > 30:
+				if num_silent > 130:
 					break
 		else:
 			if not snd_started:
