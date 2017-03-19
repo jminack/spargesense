@@ -159,7 +159,7 @@ while 1:
 	
 	for sample in samples:
 		y = sample.histo_simple()
-		plt.subplot(1,2,1)		
+		plt.subplot(1,2,1)
 		plt.imshow(sample._absmels)
 		plt.subplot(2,2,2)
 		plt.bar(range(len(y)),y,1/1.5)
@@ -171,7 +171,7 @@ while 1:
 		with open("histogram.txt", "a") as histFile:
 			histFile.write(outputfileName)
 			histFile.write(",")
-			histFile.write(str(sample.histogram()))
+			histFile.write(str(sample.histo_simple()))
 			histFile.write("\n")
 		print(sample.name(), sample.peak_hz())
 
