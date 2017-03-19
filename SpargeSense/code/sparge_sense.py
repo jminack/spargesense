@@ -45,7 +45,7 @@ class Sample:
 	def histogram(self):
 		"""returns a normalised histogram over 128 frequency bins"""
 		# print "return a histogram"
-		maxx = max( [ np.max(x) for x in self.stftspec() ] )
+		#maxx = max( [ np.max(x) for x in self.melspec() ] )
 		# print maxx
 		self._colmax = maxx
 
@@ -54,8 +54,8 @@ class Sample:
 			# normalise the samples (peak = 1.0)
 			max_amplitude = max(agg_hist)
 			#print max_amplitude
-			self._histo = [x/maxx for x in agg_hist]
-			#Matt self._histo = [x/max_amplitude for x in agg_hist]
+			# self._histo = [x/maxx for x in agg_hist]
+			self._histo = [x/max_amplitude for x in agg_hist]
 			#print self._histo
 		return self._histo
 		
@@ -93,4 +93,13 @@ def hz(bin):
 	return int(pow(2,(bin+221.81)/26.0245))
 
 
+def py2_distance(a, b):
+	"""computes the square of the pythagorean distance between 2 feature vectors a & b"""
+	sum_of_squares = 0
+	for i in range(len(a)):
+		sum_of_squares += (a[i] - b[i]) * (a[i] - b[i])
+	return sum_of_squares
+
+def isBroken(sample, broken_target, unbroken_target):
+	return py2_distance(sample, broken_target) < py2_distance(sample, unbroken_target)
 

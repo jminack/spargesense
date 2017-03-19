@@ -1,3 +1,6 @@
+.idea/
+SpargeSense/.idea/
+*.xml
 *.wav
 *.pyc
 SpargeSense/audio_data/*
